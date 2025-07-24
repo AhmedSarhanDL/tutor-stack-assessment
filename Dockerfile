@@ -1,8 +1,24 @@
-ARG SERVICE_NAME=assessment
+FROM python:3.11-slim
 
-FROM tutor-stack-base:latest
+WORKDIR /app
 
-ENV SERVICE_NAME=${SERVICE_NAME}
-ENV PORT=8000
+# Install system dependencies
+RUN apt-get update && apt-get install -y procps curl
 
+# Copy requirements files
+COPY requirements*.txt ./
+
+# Install dependencies
+RUN pip install -r requirements.txt && \
+    if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+# Copy application code
+COPY tutor_stack_assessment ./tutor_stack_assessment
+COPY tests ./tests
+COPY pyproject.toml ./
+
+# Expose the port the app runs on
+EXPOSE 8000
+
+# Command to run the application
 CMD ["python", "-m", "uvicorn", "tutor_stack_assessment.main:app", "--host", "0.0.0.0", "--port", "8000"] 
