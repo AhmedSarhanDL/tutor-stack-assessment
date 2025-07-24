@@ -99,4 +99,4 @@ GitHub Actions workflows handle:
 - Running tests
 - Code quality checks
 - Building Docker image
-- (Optional) Deployment to chosen platform 
+- (Optional) Deployment to chosen platform # CI Test
